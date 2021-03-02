@@ -14,7 +14,7 @@ Matrix *create_matrix(int r, int c) {
     (*m).columns = *(int *) malloc(sizeof(int));
     (*m).rows = r;
     (*m).columns = c;
-    (*m).values = (void ***) malloc(sizeof(void ***) * r);
+    (*m).values = (void ***) malloc(sizeof(void **) * r);
     for (int i = 0; i < r; i++) {
         (*m).values[i] = (void **) malloc(sizeof(void **) * c);
         for (int j = 0; j < c; j++) {
