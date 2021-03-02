@@ -83,18 +83,20 @@ Matrix *creat_random_complex(int r, int c) {
 }
 
 //Перемножает вещественные матрицы
-Matrix *mul_matrix_double(Matrix *a, Matrix *b) {
-    if ((*a).columns != (*b).rows) {
+void *mul_matrix_double(void *a, void *b) {
+    Matrix *m_a = (Matrix *) a;
+    Matrix *m_b = (Matrix *) b;
+    if ((*m_a).columns != (*m_a).rows) {
         printf("It is not possible to multiply matrices!\n");
-        return a;
+        return m_a;
     }
-    int r = (*a).rows, c = (*b).columns, n = (*a).columns;
+    int r = (*m_a).rows, c = (*m_a).columns, n = (*m_a).columns;
     Matrix *m = create_matrix(r, c);
     for (int i = 0; i < r; i++) {
         for (int j = 0; j < c; j++) {
             *(double *) (*m).values[i][j] = (double) 0;
             for (int k = 0; k < n; k++) {
-                *(double *) (*m).values[i][j] += *(double *) (*a).values[i][k] * *(double *) (*b).values[k][j];
+                *(double *) (*m).values[i][j] += *(double *) (*m_a).values[i][k] * *(double *) (*m_b).values[k][j];
             }
         }
     }
@@ -103,19 +105,21 @@ Matrix *mul_matrix_double(Matrix *a, Matrix *b) {
 }
 
 //Перемножает комплексные матрицы
-Matrix *mul_matrix_complex(Matrix *a, Matrix *b) {
-    if ((*a).columns != (*b).rows) {
+void *mul_matrix_complex(void *a, void *b) {
+    Matrix *m_a = (Matrix *) a;
+    Matrix *m_b = (Matrix *) b;
+    if ((*m_a).columns != (*m_b).rows) {
         printf("It is not possible to multiply matrices!\n");
-        return a;
+        return m_a;
     }
-    int r = (*a).rows, c = (*b).columns, n = (*a).columns;
+    int r = (*m_a).rows, c = (*m_b).columns, n = (*m_a).columns;
     Matrix *m = create_matrix(r, c);
     for (int i = 0; i < r; i++) {
         for (int j = 0; j < c; j++) {
             *(double *) (*m).values[i][j] = (double complex) 0;
             for (int k = 0; k < n; k++) {
                 *(double complex *) (*m).values[i][j] +=
-                        *(double complex *) (*a).values[i][k] * *(double complex *) (*b).values[k][j];
+                        *(double complex *) (*m_a).values[i][k] * *(double complex *) (*m_b).values[k][j];
             }
         }
     }
@@ -124,79 +128,90 @@ Matrix *mul_matrix_complex(Matrix *a, Matrix *b) {
 }
 
 //Умножает вещественную матрицу на вещественный скаляр
-Matrix *mul_scalar_matrix_double(Matrix *a, double scalar) {
-    for (int i = 0; i < (*a).rows; i++) {
-        for (int j = 0; j < (*a).columns; j++) {
-            *(double *) (*a).values[i][j] = scalar * *(double *) (*a).values[i][j];
+void *mul_scalar_matrix_double(void *a, double scalar) {
+    Matrix *m_a = (Matrix *) a;
+    for (int i = 0; i < (*m_a).rows; i++) {
+        for (int j = 0; j < (*m_a).columns; j++) {
+            *(double *) (*m_a).values[i][j] = scalar * *(double *) (*m_a).values[i][j];
         }
     }
-    return a;
+    return m_a;
 }
 
 //Умножает комплексную матрицу на комплексный скаляр
-Matrix *mul_scalar_matrix_complex(Matrix *a, double complex scalar) {
-    for (int i = 0; i < (*a).rows; i++) {
-        for (int j = 0; j < (*a).columns; j++) {
-            *(double complex *) (*a).values[i][j] = scalar * *(double complex *) (*a).values[i][j];
+void *mul_scalar_matrix_complex(void *a, double scalar) {
+    Matrix *m_a = (Matrix *) a;
+    for (int i = 0; i < (*m_a).rows; i++) {
+        for (int j = 0; j < (*m_a).columns; j++) {
+            *(double complex *) (*m_a).values[i][j] = scalar * *(double complex *) (*m_a).values[i][j];
         }
     }
-    return a;
+    return m_a;
 }
 
 //Добавляет вещественную матрицу
-Matrix *add_matrix_double(Matrix *a, Matrix *b) {
-    if (((*a).rows != (*b).rows) || ((*a).columns != (*b).columns)) {
+void *add_matrix_double(void *a, void *b) {
+    Matrix *m_a = (Matrix *) a;
+    Matrix *m_b = (Matrix *) b;
+    if (((*m_a).rows != (*m_b).rows) || ((*m_a).columns != (*m_b).columns)) {
         printf("It is impossible to add matrix!\n");
-        return a;
+        return m_a;
     }
-    for (int i = 0; i < (*a).rows; i++) {
-        for (int j = 0; j < (*a).columns; j++) {
-            *(double *) (*a).values[i][j] += *(double *) (*b).values[i][j];
+    for (int i = 0; i < (*m_a).rows; i++) {
+        for (int j = 0; j < (*m_a).columns; j++) {
+            *(double *) (*m_a).values[i][j] += *(double *) (*m_b).values[i][j];
         }
     }
     printf("Operation completed successfully!\n");
-    return a;
+    return m_a;
 }
 
 //Добавляет комплексную матрицу
-Matrix *add_matrix_complex(Matrix *a, Matrix *b) {
-    if (((*a).rows != (*b).rows) || ((*a).columns != (*b).columns)) {
+void *add_matrix_complex(void *a, void *b) {
+    Matrix *m_a = (Matrix *) a;
+    Matrix *m_b = (Matrix *) b;
+    if (((*m_a).rows != (*m_b).rows) || ((*m_a).columns != (*m_b).columns)) {
         printf("It is impossible to add matrix!\n");
-        return a;
+        return m_a;
     }
-    for (int i = 0; i < (*a).rows; i++) {
-        for (int j = 0; j < (*a).columns; j++) {
-            *(double complex *) (*a).values[i][j] += *(double complex *) (*b).values[i][j];
+    for (int i = 0; i < (*m_a).rows; i++) {
+        for (int j = 0; j < (*m_a).columns; j++) {
+            *(double complex *) (*m_a).values[i][j] += *(double complex *) (*m_b).values[i][j];
         }
     }
     printf("Operation completed successfully!\n");
-    return a;
+    return m_a;
 }
 
 //Вычитает вещественную матрицу
-Matrix *subtract_matrix_double(Matrix *a, Matrix *b) {
-    if (((*a).rows != (*b).rows) || ((*a).columns != (*b).columns)) {
+void *subtract_matrix_double(void *a, void *b) {
+    Matrix *m_a = (Matrix *) a;
+    Matrix *m_b = (Matrix *) b;
+    if (((*m_a).rows != (*m_b).rows) || ((*m_a).columns != (*m_b).columns)) {
         printf("It is impossible to subtract matrix!\n");
-        return a;
+        return m_a;
     }
-    return add_matrix_double(a, mul_scalar_matrix_double(b, (double) -1));
+    return add_matrix_double(m_a, mul_scalar_matrix_double(m_b, (double) -1));
 }
 
 //Вычитает комплексную матрицу
-Matrix *subtract_matrix_complex(Matrix *a, Matrix *b) {
-    if (((*a).rows != (*b).rows) || ((*a).columns != (*b).columns)) {
+void *subtract_matrix_complex(void *a, void *b) {
+    Matrix *m_a = (Matrix *) a;
+    Matrix *m_b = (Matrix *) b;
+    if (((*m_a).rows != (*m_b).rows) || ((*m_a).columns != (*m_b).columns)) {
         printf("It is impossible to subtract matrix!\n");
-        return a;
+        return m_a;
     }
-    return add_matrix_complex(a, mul_scalar_matrix_complex(b, (double complex) -1));
+    return add_matrix_complex(m_a, mul_scalar_matrix_complex(m_b, (double complex) -1));
 }
 
 //Транспонирует матрицу
-Matrix *transpose_matrix(Matrix *a) {
-    Matrix *t = create_matrix((*a).columns, (*a).rows);
+void *transpose_matrix(void *a) {
+    Matrix *m_a = (Matrix *) a;
+    Matrix *t = create_matrix((*m_a).columns, (*m_a).rows);
     for (int i = 0; i < (*t).rows; i++) {
         for (int j = 0; j < (*t).columns; j++) {
-            (*t).values[i][j] = (*a).values[j][i];
+            (*t).values[i][j] = (*m_a).values[j][i];
         }
     }
     return t;

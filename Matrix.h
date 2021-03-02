@@ -12,6 +12,17 @@ typedef struct Matrix {
     int columns;
     int rows;
     void ***values;
+
+    void *(*mul_matrix)(void *a, void *b);
+
+    void *(*mul_scalar)(void *a, double);
+
+    void *(*add_matrix)(void *a, void *b);
+
+    void *(*subtract_matrix)(void *a, void *b);
+
+    void *(*transpose)(void *a);
+
 } Matrix;
 
 Matrix *create_matrix(int r, int c);
@@ -24,22 +35,22 @@ Matrix *creat_random_double(int r, int c);
 
 Matrix *creat_random_complex(int r, int c);
 
-Matrix *mul_matrix_double(Matrix *a, Matrix *b);
+void *mul_matrix_double(void *a, void *b);
 
-Matrix *mul_matrix_complex(Matrix *a, Matrix *b);
+void *mul_matrix_complex(void *a, void *b);
 
-Matrix *mul_scalar_matrix_double(Matrix *a, double scalar);
+void *mul_scalar_matrix_double(void *a, double scalar);
 
-Matrix *mul_scalar_matrix_complex(Matrix *a, double complex scalar);
+void *mul_scalar_matrix_complex(void *a, double scalar);
 
-Matrix *add_matrix_double(Matrix *a, Matrix *b);
+void *add_matrix_double(void *a, void *b);
 
-Matrix *add_matrix_complex(Matrix *a, Matrix *b);
+void *add_matrix_complex(void *a, void *b);
 
-Matrix *subtract_matrix_double(Matrix *a, Matrix *b);
+void *subtract_matrix_double(void *a, void *b);
 
-Matrix *subtract_matrix_complex(Matrix *a, Matrix *b);
+void *subtract_matrix_complex(void *a, void *b);
 
-Matrix *transpose_matrix(Matrix *a);
+void *transpose_matrix(void *a);
 
 #endif
