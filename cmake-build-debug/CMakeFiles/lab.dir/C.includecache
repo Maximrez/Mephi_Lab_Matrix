@@ -6,6 +6,8 @@
 
 #IncludeRegexTransform: 
 
+/cygdrive/c/Users/Максим/CLionProjects/lab/Matrix.c
+Matrix.h
 /cygdrive/c/Users/Максим/CLionProjects/lab/Matrix.h
 stdio.h
 -
@@ -15,9 +17,9 @@ complex.h
 -
 math.h
 -
+time.h
+-
 
-/cygdrive/c/Users/Максим/CLionProjects/lab/main.c
-Matrix.h
 /cygdrive/c/Users/Максим/CLionProjects/lab/Matrix.h
 stdio.h
 -
