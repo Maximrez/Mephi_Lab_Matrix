@@ -8,16 +8,8 @@
 const int E = 20, P = 0; //Константы рандома (модуль числа и количество цифр после запятой)
 
 //Выделяет память под матрицу и создаёт её
-void *create_matrix(int r, int c,
-                    void *print_value,
-                    void *print,
-                    void *input_value,
-                    void *input,
-                    void *transpose,
-                    void *mul_scalar,
-                    void *mul_matrix,
-                    void *add_matrix,
-                    void *sub_matrix) {
+void *create_matrix(int r, int c, function_list) {
+
     Matrix *m = malloc(sizeof(Matrix));
     (*m).rows = *(int *) malloc(sizeof(int));
     (*m).columns = *(int *) malloc(sizeof(int));
@@ -33,8 +25,12 @@ void *create_matrix(int r, int c,
     (*m).print_value = print_value;
     (*m).print = print;
     (*m).input_value = input_value;
+    (*m).put_zero = put_zero;
+    (*m).put_one = put_one;
     (*m).input = input;
     (*m).transpose = transpose;
+    (*m).add_values = add_values;
+    (*m).mul_values = mul_values;
     (*m).mul_scalar = mul_scalar;
     (*m).mul_matrix = mul_matrix;
     (*m).add_matrix = add_matrix;
@@ -42,30 +38,16 @@ void *create_matrix(int r, int c,
     return m;
 }
 
-// Создаёт единичную вещественную матрицу
-void *create_identity_double(int s) {
-    Matrix *m = create_matrix_double(s, s);
+// Создаёт единичную матрицу
+void *create_identity(int s, function_list) {
+    Matrix *m = create_matrix(s, s, print_value, print, input_value, put_zero, put_one, input, transpose, add_values,
+                              mul_values, mul_scalar, mul_matrix, add_matrix, sub_matrix);
     for (int i = 0; i < s; i++) {
         for (int j = 0; j < s; j++) {
             if (i == j) {
-                *(double *) (*m).values[i][j] = (double) 1;
+                m = (*m).put_one(m, i, j);
             } else {
-                *(double *) (*m).values[i][j] = (double) 0;
-            }
-        }
-    }
-    return m;
-}
-
-// Создаёт единичную комплексную матрицу
-void *create_identity_complex(int s) {
-    Matrix *m = create_matrix_complex(s, s);
-    for (int i = 0; i < s; i++) {
-        for (int j = 0; j < s; j++) {
-            if (i == j) {
-                *(double complex *) (*m).values[i][j] = (double complex) 1;
-            } else {
-                *(double complex *) (*m).values[i][j] = (double complex) 0;
+                m = (*m).put_zero(m, i, j);
             }
         }
     }
@@ -76,7 +58,7 @@ void *create_identity_complex(int s) {
 void *create_random_double(int r, int c) {
     srand(time(0));
     int d = (int) pow(10, P);
-    Matrix *m = create_matrix_double(r, c);
+    Matrix *m = create_matrix(r, c, functions_double);
     for (int i = 0; i < r; i++) {
         for (int j = 0; j < c; j++) {
             *(double *) (*m).values[i][j] = (double) (rand() % (E * d) - ((double) E * d / 2)) / d;
@@ -89,7 +71,7 @@ void *create_random_double(int r, int c) {
 void *create_random_complex(int r, int c) {
     srand(time(0));
     int d = (int) pow(10, P);
-    Matrix *m = create_matrix_complex(r, c);
+    Matrix *m = create_matrix(r, c, functions_complex);
     for (int i = 0; i < r; i++) {
         for (int j = 0; j < c; j++) {
             double r1 = (double) (rand() % (E * d) - ((double) E * d / 2)) / d;
@@ -100,13 +82,13 @@ void *create_random_complex(int r, int c) {
     return m;
 }
 
-//Выводит элемент вещественной матрицы
+//Выводит на экран элемент вещественной матрицы
 void *print_value_double(void *a, int r, int c) {
     Matrix *m_a = (Matrix *) a;
     printf("%.1lf", *(double *) (*m_a).values[r][c]);
 }
 
-//Выводит элемент комплексной матрицы
+//Выводит на экран элемент комплексной матрицы
 void *print_value_complex(void *a, int r, int c) {
     Matrix *m_a = (Matrix *) a;
     double complex v = *(double complex *) (*m_a).values[r][c];
@@ -118,7 +100,7 @@ void *print_value_complex(void *a, int r, int c) {
     return NULL;
 }
 
-//Вывод на экран матрицу
+//Выводит на экран матрицу
 void *print_matrix(void *a) {
     Matrix *m_a = (Matrix *) a;
     for (int i = 0; i < (*m_a).rows; i++) {
@@ -134,7 +116,7 @@ void *print_matrix(void *a) {
     return NULL;
 }
 
-//Ввод с клавиатуры элемента вещественной
+//Ввод с клавиатуры элемента вещественной матрицы
 void *input_value_double(void *a, int r, int c) {
     Matrix *m_a = (Matrix *) a;
     scanf("%lf", (double *) ((*m_a).values[r][c]));
@@ -150,6 +132,34 @@ void *input_value_complex(void *a, int r, int c) {
     return m_a;
 }
 
+//Делает элемент вещественной матрицы равным нулю
+void *put_zero_double(void *a, int i, int j) {
+    Matrix *m_a = (Matrix *) a;
+    *(double *) (*m_a).values[i][j] = (double) 0;
+    return m_a;
+}
+
+//Делает элемент комплексной матрицы равным нулю
+void *put_zero_complex(void *a, int i, int j) {
+    Matrix *m_a = (Matrix *) a;
+    *(double complex *) (*m_a).values[i][j] = (double complex) 0;
+    return m_a;
+}
+
+//Делает элемент вещественной матрицы равным единице
+void *put_one_double(void *a, int i, int j) {
+    Matrix *m_a = (Matrix *) a;
+    *(double *) (*m_a).values[i][j] = (double) 1;
+    return m_a;
+}
+
+//Делает элемент комплексной матрицы равным нулю
+void *put_one_complex(void *a, int i, int j) {
+    Matrix *m_a = (Matrix *) a;
+    *(double complex *) (*m_a).values[i][j] = (double complex) 1;
+    return m_a;
+}
+
 //Ввод с клавиатуры матрицы
 void *input_matrix(void *a) {
     Matrix *m_a = (Matrix *) a;
@@ -162,10 +172,11 @@ void *input_matrix(void *a) {
     return m_a;
 }
 
-//Транспонирует вещественную матрицу
-void *transpose_matrix_double(void *a) {
+//Транспонирует матрицу
+void *transpose_matrix(void *a) {
     Matrix *m_a = (Matrix *) a;
-    Matrix *t = create_matrix_double((*m_a).columns, (*m_a).rows);
+    Matrix *t = create_matrix((*m_a).columns, (*m_a).rows, functions_format(m_a));
+
     for (int i = 0; i < (*t).rows; i++) {
         for (int j = 0; j < (*t).columns; j++) {
             (*t).values[i][j] = (*m_a).values[j][i];
@@ -174,43 +185,47 @@ void *transpose_matrix_double(void *a) {
     return t;
 }
 
-//Транспонирует комплексную матрицу
-void *transpose_matrix_complex(void *a) {
-    Matrix *m_a = (Matrix *) a;
-    Matrix *t = create_matrix_complex((*m_a).columns, (*m_a).rows);
-    for (int i = 0; i < (*t).rows; i++) {
-        for (int j = 0; j < (*t).columns; j++) {
-            (*t).values[i][j] = (*m_a).values[j][i];
-        }
-    }
-    return t;
+//Складывает вещественные числа
+void *add_values_double(void *a, void *b) {
+    double *r = (double *) malloc(sizeof(double));
+    *r = *(double *) a + *(double *) b;
+    return r;
 }
 
-//Умножает вещественную матрицу на вещественный скаляр
-void *mul_scalar_matrix_double(void *a, void *scalar) {
+//Складывает комплексные числа
+void *add_values_complex(void *a, void *b) {
+    double complex *r = (double complex *) malloc(sizeof(double complex));
+    *r = *(double complex *) a + *(double complex *) b;
+    return r;
+}
+
+//Перемножает вещественные числа
+void *mul_values_double(void *a, void *b) {
+    double *r = (double *) malloc(sizeof(double));
+    *r = *(double *) a * *(double *) b;
+    return r;
+}
+
+//Перемножает комплексные числа
+void *mul_values_complex(void *a, void *b) {
+    double complex *r = (double complex *) malloc(sizeof(double complex));
+    *r = *(double complex *) a * *(double complex *) b;
+    return r;
+}
+
+//Умножает матрицу на скаляр
+void *mul_scalar_matrix(void *a, void *scalar) {
     Matrix *m_a = (Matrix *) a;
     for (int i = 0; i < (*m_a).rows; i++) {
         for (int j = 0; j < (*m_a).columns; j++) {
-            *(double *) (*m_a).values[i][j] = *(double *) scalar * *(double *) (*m_a).values[i][j];
+            (*m_a).values[i][j] = (*m_a).mul_values((*m_a).values[i][j], scalar);
         }
     }
     return m_a;
 }
 
-//Умножает вещественную матрицу на комплексный скаляр
-void *mul_scalar_matrix_complex(void *a, void *scalar) {
-    Matrix *m_a = (Matrix *) a;
-    for (int i = 0; i < (*m_a).rows; i++) {
-        for (int j = 0; j < (*m_a).columns; j++) {
-            *(double complex *) (*m_a).values[i][j] =
-                    *(double complex *) scalar * *(double complex *) (*m_a).values[i][j];
-        }
-    }
-    return m_a;
-}
-
-//Перемножает вещественные матрицы
-void *mul_matrix_double(void *a, void *b) {
+//Перемножает матрицы
+void *mul_matrix(void *a, void *b) {
     Matrix *m_a = (Matrix *) a;
     Matrix *m_b = (Matrix *) b;
     if ((*m_a).columns != (*m_b).rows) {
@@ -218,12 +233,13 @@ void *mul_matrix_double(void *a, void *b) {
         return m_a;
     }
     int r = (*m_a).rows, c = (*m_b).columns, n = (*m_a).columns;
-    Matrix *m = create_matrix_double(r, c);
+    Matrix *m = create_matrix(r, c, functions_format(m_a));
     for (int i = 0; i < r; i++) {
         for (int j = 0; j < c; j++) {
-            *(double *) (*m).values[i][j] = (double) 0;
+            m = (*m).put_zero(m, i, j);
             for (int k = 0; k < n; k++) {
-                *(double *) (*m).values[i][j] += *(double *) (*m_a).values[i][k] * *(double *) (*m_b).values[k][j];
+                (*m).values[i][j] = (*m).add_values((*m).values[i][j],
+                                                    (*m).mul_values((*m_a).values[i][k], (*m_b).values[k][j]));
             }
         }
     }
@@ -231,31 +247,8 @@ void *mul_matrix_double(void *a, void *b) {
     return m;
 }
 
-//Перемножает комплексные матрицы
-void *mul_matrix_complex(void *a, void *b) {
-    Matrix *m_a = (Matrix *) a;
-    Matrix *m_b = (Matrix *) b;
-    if ((*m_a).columns != (*m_b).rows) {
-        printf("It is not possible to multiply matrices!\n");
-        return m_a;
-    }
-    int r = (*m_a).rows, c = (*m_b).columns, n = (*m_a).columns;
-    Matrix *m = create_matrix_complex(r, c);
-    for (int i = 0; i < r; i++) {
-        for (int j = 0; j < c; j++) {
-            *(double complex *) (*m).values[i][j] = (double complex) 0;
-            for (int k = 0; k < n; k++) {
-                *(double complex *) (*m).values[i][j] +=
-                        *(double complex *) (*m_a).values[i][k] * *(double complex *) (*m_b).values[k][j];
-            }
-        }
-    }
-    printf("Operation completed successfully!\n");
-    return m;
-}
-
-//Прибавляет вещественную матрицу
-void *add_matrix_double(void *a, void *b) {
+//Прибавляет матрицу
+void *add_matrix(void *a, void *b) {
     Matrix *m_a = (Matrix *) a;
     Matrix *m_b = (Matrix *) b;
     if (((*m_a).rows != (*m_b).rows) || ((*m_a).columns != (*m_b).columns)) {
@@ -264,24 +257,7 @@ void *add_matrix_double(void *a, void *b) {
     }
     for (int i = 0; i < (*m_a).rows; i++) {
         for (int j = 0; j < (*m_a).columns; j++) {
-            *(double *) (*m_a).values[i][j] += *(double *) (*m_b).values[i][j];
-        }
-    }
-    printf("Operation completed successfully!\n");
-    return m_a;
-}
-
-//Прибавляет комплексную матрицу
-void *add_matrix_complex(void *a, void *b) {
-    Matrix *m_a = (Matrix *) a;
-    Matrix *m_b = (Matrix *) b;
-    if (((*m_a).rows != (*m_b).rows) || ((*m_a).columns != (*m_b).columns)) {
-        printf("It is impossible to add matrix!\n");
-        return m_a;
-    }
-    for (int i = 0; i < (*m_a).rows; i++) {
-        for (int j = 0; j < (*m_a).columns; j++) {
-            *(double complex *) (*m_a).values[i][j] += *(double complex *) (*m_b).values[i][j];
+            (*m_a).values[i][j] = (*m_a).add_values((*m_a).values[i][j], (*m_b).values[i][j]);
         }
     }
     printf("Operation completed successfully!\n");

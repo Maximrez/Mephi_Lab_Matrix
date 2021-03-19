@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <complex.h>
 
-// Выбрать как создать вещественную матрицу
-void *choose_create_double() {
+// Выбрать как создать матрицу
+void *choose_create(int s1) {
     printf("Select the way to create matrix:\n1 - input from keyboard\n2 - create identity\n3 - create random\n");
     int s = 0, r, c;
     while ((s < 1) || (s > 3)) {
@@ -23,8 +23,14 @@ void *choose_create_double() {
                     printf("Enter a positive integer!\ncolumns: ");
                     scanf("%d", &c);
                 }
-                Matrix *m = create_matrix_double(r, c);
-                return (*m).input(m);
+                if (s1 == 1) {
+                    Matrix *m = create_matrix(r, c, functions_double);
+                    return (*m).input(m);
+                }
+                if (s1 == 2) {
+                    Matrix *m = create_matrix(r, c, functions_complex);
+                    return (*m).input(m);
+                }
             }
             case 2: {
                 printf("side: ");
@@ -33,7 +39,12 @@ void *choose_create_double() {
                     printf("Enter a positive integer!\nside: ");
                     scanf("%d", &r);
                 }
-                return create_identity_double(r);
+                if (s1 == 1) {
+                    return create_identity(r, functions_double);
+                }
+                if (s1 == 2) {
+                    return create_identity(r, functions_complex);
+                }
             }
             case 3: {
                 printf("rows: ");
@@ -48,64 +59,12 @@ void *choose_create_double() {
                     printf("Enter a positive integer!\ncolumns: ");
                     scanf("%d", &c);
                 }
-                return create_random_double(r, c);
-            }
-            default: {
-                printf("Enter a number from the list!\n");
-                break;
-            }
-        }
-    }
-    return NULL;
-}
-
-// Выбрать как создать комплексную матрицу
-void *choose_create_complex() {
-    printf("Select the way to create matrix:\n1 - input from keyboard\n2 - create identity\n3 - create random\n");
-    int s = 0, r, c;
-    while ((s < 1) || (s > 3)) {
-        scanf("%d", &s);
-        switch (s) {
-            case 1: {
-                printf("rows: ");
-                scanf("%d", &r);
-                while (r < 1) {
-                    printf("Enter a positive integer!\nrows: ");
-                    scanf("%d", &r);
+                if (s1 == 1) {
+                    return create_random_double(r, c);
                 }
-                printf("columns: ");
-                scanf("%d", &c);
-                while (c < 1) {
-                    printf("Enter a positive integer!\ncolumns: ");
-                    scanf("%d", &c);
+                if (s1 == 2) {
+                    return create_random_complex(r, c);
                 }
-                Matrix *m = create_matrix_complex(r, c);
-                printf("Enter two numbers separated by a space!");
-                return (*m).input(m);
-            }
-            case 2: {
-                printf("side: ");
-                scanf("%d", &r);
-                while (r < 1) {
-                    printf("Enter a positive integer!\nside: ");
-                    scanf("%d", &r);
-                }
-                return create_identity_complex(r);
-            }
-            case 3: {
-                printf("rows: ");
-                scanf("%d", &r);
-                while (r < 1) {
-                    printf("Enter a positive integer!\nrows: ");
-                    scanf("%d", &r);
-                }
-                printf("columns: ");
-                scanf("%d", &c);
-                while (c < 1) {
-                    printf("Enter a positive integer!\ncolumns: ");
-                    scanf("%d", &c);
-                }
-                return create_random_complex(r, c);
             }
             default: {
                 printf("Enter a number from the list!\n");
@@ -124,11 +83,11 @@ int main() {
         scanf("%d", &s1);
         switch (s1) {
             case 1: {
-                m = choose_create_double();
+                m = choose_create(1);
                 break;
             }
             case 2: {
-                m = choose_create_complex();
+                m = choose_create(2);
                 break;
             }
             default: {
@@ -146,8 +105,7 @@ int main() {
         scanf("%d", &s2);
         switch (s2) {
             case 1: {
-                if (s1 == 1) m = choose_create_double();
-                if (s1 == 2) m = choose_create_complex();
+                m = choose_create(s1);
                 break;
             }
             case 2: {
@@ -157,7 +115,7 @@ int main() {
                     printf("Index out of rows!\nrow (from 1 to %d): ", (*m).rows);
                     scanf("%d", &r);
                 }
-                printf("columns (from 1 to %d): ", (*m).columns);
+                printf("column (from 1 to %d): ", (*m).columns);
                 scanf("%d", &c);
                 while ((c < 1) || (c > (*m).columns)) {
                     printf("Index out of columns!\ncolumn (from 1 to %d): ", (*m).columns);
@@ -192,24 +150,21 @@ int main() {
                 break;
             }
             case 5: {
-                if (s1 == 1) m1 = choose_create_double();
-                if (s1 == 2) m1 = choose_create_complex();
+                m1 = choose_create(s1);
                 printf("\nNew matrix:\n");
                 (*m1).print(m1);
                 m = (*m).add_matrix(m, m1);
                 break;
             }
             case 6: {
-                if (s1 == 1) m1 = choose_create_double();
-                if (s1 == 2) m1 = choose_create_complex();
+                m1 = choose_create(s1);
                 printf("\nNew matrix:\n");
                 (*m1).print(m1);
                 m = (*m).sub_matrix(m, m1);
                 break;
             }
             case 7: {
-                if (s1 == 1) m1 = choose_create_double();
-                if (s1 == 2) m1 = choose_create_complex();
+                m1 = choose_create(s1);
                 printf("\nNew matrix:\n");
                 (*m1).print(m1);
                 m = (*m).mul_matrix(m, m1);

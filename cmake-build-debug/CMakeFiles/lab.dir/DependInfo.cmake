@@ -4,8 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/cygdrive/c/Users/Максим/CLionProjects/lab/Matrix.c" "/cygdrive/c/Users/Максим/CLionProjects/lab/cmake-build-debug/CMakeFiles/lab.dir/Matrix.c.o"
-  "/cygdrive/c/Users/Максим/CLionProjects/lab/main.c" "/cygdrive/c/Users/Максим/CLionProjects/lab/cmake-build-debug/CMakeFiles/lab.dir/main.c.o"
+  "/cygdrive/d/CLionProjects/lab/Matrix.c" "/cygdrive/d/CLionProjects/lab/cmake-build-debug/CMakeFiles/lab.dir/Matrix.c.o"
+  "/cygdrive/d/CLionProjects/lab/main.c" "/cygdrive/d/CLionProjects/lab/cmake-build-debug/CMakeFiles/lab.dir/main.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

@@ -8,8 +8,10 @@
 #include <complex.h>
 #include <math.h>
 
-#define create_matrix_double(r, c) create_matrix(r, c, print_value_double, print_matrix, input_value_double, input_matrix, transpose_matrix_double, mul_scalar_matrix_double, mul_matrix_double, add_matrix_double, sub_matrix)
-#define create_matrix_complex(r, c) create_matrix(r, c, print_value_complex, print_matrix, input_value_complex, input_matrix, transpose_matrix_complex, mul_scalar_matrix_complex, mul_matrix_complex, add_matrix_complex, sub_matrix)
+#define functions_double print_value_double, print_matrix, input_value_double, put_zero_double, put_one_double, input_matrix, transpose_matrix, add_values_double, mul_values_double, mul_scalar_matrix, mul_matrix, add_matrix, sub_matrix
+#define functions_complex print_value_complex, print_matrix, input_value_complex, put_zero_complex, put_one_complex, input_matrix, transpose_matrix, add_values_complex, mul_values_complex, mul_scalar_matrix, mul_matrix, add_matrix, sub_matrix
+#define functions_format(m) (*m).print_value, (*m).print, (*m).input_value, (*m).put_zero, (*m).put_one, (*m).input, (*m).transpose, (*m).add_values, (*m).mul_values, (*m).mul_scalar, (*m).mul_matrix, (*m).add_matrix, (*m).sub_matrix
+#define function_list void *print_value, void *print, void *input_value, void *put_zero, void *put_one, void *input, void *transpose, void *add_values, void *mul_values, void *mul_scalar, void *mul_matrix, void *add_matrix, void *sub_matrix
 
 typedef struct Matrix {
     int rows;
@@ -22,9 +24,17 @@ typedef struct Matrix {
 
     void *(*input_value)(void *, int, int);
 
+    void *(*put_zero)(void *, int, int);
+
+    void *(*put_one)(void *, int, int);
+
     void *(*input)(void *);
 
     void *(*transpose)(void *);
+
+    void *(*add_values)(void *, void *);
+
+    void *(*mul_values)(void *, void *);
 
     void *(*mul_scalar)(void *, void *);
 
@@ -35,20 +45,9 @@ typedef struct Matrix {
     void *(*sub_matrix)(void *, void *);
 } Matrix;
 
-void *create_matrix(int r, int c,
-                    void *print_value,
-                    void *print,
-                    void *input_value,
-                    void *input,
-                    void *transpose,
-                    void *mul_scalar,
-                    void *mul_matrix,
-                    void *add_matrix,
-                    void *sub_matrix);
+void *create_matrix(int r, int c, function_list);
 
-void *create_identity_double(int s);
-
-void *create_identity_complex(int s);
+void *create_identity(int s, function_list);
 
 void *create_random_double(int r, int c);
 
@@ -64,23 +63,31 @@ void *input_value_double(void *a, int r, int c);
 
 void *input_value_complex(void *a, int r, int c);
 
+void *put_zero_double(void *a, int i, int j);
+
+void *put_zero_complex(void *a, int i, int j);
+
+void *put_one_double(void *a, int i, int j);
+
+void *put_one_complex(void *a, int i, int j);
+
 void *input_matrix(void *a);
 
-void *transpose_matrix_double(void *a);
+void *transpose_matrix(void *a);
 
-void *transpose_matrix_complex(void *a);
+void *add_values_double(void *a, void *b);
 
-void *mul_scalar_matrix_double(void *a, void *scalar);
+void *add_values_complex(void *a, void *b);
 
-void *mul_scalar_matrix_complex(void *a, void *scalar);
+void *mul_values_double(void *a, void *b);
 
-void *mul_matrix_double(void *a, void *b);
+void *mul_values_complex(void *a, void *b);
 
-void *mul_matrix_complex(void *a, void *b);
+void *mul_scalar_matrix(void *a, void *scalar);
 
-void *add_matrix_double(void *a, void *b);
+void *mul_matrix(void *a, void *b);
 
-void *add_matrix_complex(void *a, void *b);
+void *add_matrix(void *a, void *b);
 
 void *sub_matrix(void *a, void *b);
 
