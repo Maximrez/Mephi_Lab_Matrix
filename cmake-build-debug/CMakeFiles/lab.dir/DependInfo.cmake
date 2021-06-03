@@ -6,6 +6,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_C
   "/cygdrive/d/CLionProjects/lab/Matrix.c" "/cygdrive/d/CLionProjects/lab/cmake-build-debug/CMakeFiles/lab.dir/Matrix.c.o"
   "/cygdrive/d/CLionProjects/lab/main.c" "/cygdrive/d/CLionProjects/lab/cmake-build-debug/CMakeFiles/lab.dir/main.c.o"
+  "/cygdrive/d/CLionProjects/lab/tests.c" "/cygdrive/d/CLionProjects/lab/cmake-build-debug/CMakeFiles/lab.dir/tests.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

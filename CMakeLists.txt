@@ -3,4 +3,4 @@ project(lab C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(lab Matrix.c Matrix.h main.c)
+add_executable(lab Matrix.c Matrix.h main.c tests.c tests.h)

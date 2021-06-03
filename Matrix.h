@@ -1,6 +1,3 @@
-#ifndef MATRIX_H
-#define MATRIX_H
-
 #pragma once
 
 #include <stdio.h>
@@ -46,29 +43,23 @@ typedef struct Matrix {
 } Matrix;
 
 void *create_matrix(int r, int c, function_list);
-
 void *create_identity(int s, function_list);
 
 void *create_random_double(int r, int c);
-
 void *create_random_complex(int r, int c);
 
 void *print_value_double(void *m, int r, int c);
-
 void *print_value_complex(void *m, int r, int c);
 
 void *print_matrix(void *a);
 
 void *input_value_double(void *a, int r, int c);
-
 void *input_value_complex(void *a, int r, int c);
 
 void *put_zero_double(void *a, int i, int j);
-
 void *put_zero_complex(void *a, int i, int j);
 
 void *put_one_double(void *a, int i, int j);
-
 void *put_one_complex(void *a, int i, int j);
 
 void *input_matrix(void *a);
@@ -76,11 +67,9 @@ void *input_matrix(void *a);
 void *transpose_matrix(void *a);
 
 void *add_values_double(void *a, void *b);
-
 void *add_values_complex(void *a, void *b);
 
 void *mul_values_double(void *a, void *b);
-
 void *mul_values_complex(void *a, void *b);
 
 void *mul_scalar_matrix(void *a, void *scalar);
@@ -90,5 +79,3 @@ void *mul_matrix(void *a, void *b);
 void *add_matrix(void *a, void *b);
 
 void *sub_matrix(void *a, void *b);
-
-#endif

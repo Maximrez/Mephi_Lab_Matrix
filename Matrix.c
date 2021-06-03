@@ -1,9 +1,9 @@
-#include "Matrix.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <complex.h>
 #include <math.h>
 #include <time.h>
+#include "Matrix.h"
 
 const int E = 20, P = 0; //Константы рандома (модуль числа и количество цифр после запятой)
 
@@ -238,12 +238,10 @@ void *mul_matrix(void *a, void *b) {
         for (int j = 0; j < c; j++) {
             m = (*m).put_zero(m, i, j);
             for (int k = 0; k < n; k++) {
-                (*m).values[i][j] = (*m).add_values((*m).values[i][j],
-                                                    (*m).mul_values((*m_a).values[i][k], (*m_b).values[k][j]));
+                (*m).values[i][j] = (*m).add_values((*m).values[i][j], (*m).mul_values((*m_a).values[i][k], (*m_b).values[k][j]));
             }
         }
     }
-    printf("Operation completed successfully!\n");
     return m;
 }
 
@@ -260,7 +258,6 @@ void *add_matrix(void *a, void *b) {
             (*m_a).values[i][j] = (*m_a).add_values((*m_a).values[i][j], (*m_b).values[i][j]);
         }
     }
-    printf("Operation completed successfully!\n");
     return m_a;
 }
 

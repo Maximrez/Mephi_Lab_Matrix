@@ -83,6 +83,12 @@
 		<Unit filename="/cygdrive/d/CLionProjects/lab/main.c">
 			<Option target="lab"/>
 		</Unit>
+		<Unit filename="/cygdrive/d/CLionProjects/lab/tests.c">
+			<Option target="lab"/>
+		</Unit>
+		<Unit filename="/cygdrive/d/CLionProjects/lab/tests.h">
+			<Option target="lab"/>
+		</Unit>
 		<Unit filename="/cygdrive/d/CLionProjects/lab/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>

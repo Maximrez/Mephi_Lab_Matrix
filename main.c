@@ -1,7 +1,8 @@
-#include "Matrix.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <complex.h>
+#include "Matrix.h"
+#include "tests.h"
 
 // Выбрать как создать матрицу
 void *choose_create(int s1) {
@@ -76,10 +77,10 @@ void *choose_create(int s1) {
 }
 
 int main() {
-    printf("Select the type of matrices:\n1 - double\n2 - complex\n");
+    printf("Select the type of matrices or else:\n1 - double\n2 - complex\n3 - run tests\n");
     int s1 = 0;
     Matrix *m;
-    while ((s1 < 1) || (s1 > 2)) {
+    while ((s1 < 1) || (s1 > 3)) {
         scanf("%d", &s1);
         switch (s1) {
             case 1: {
@@ -89,6 +90,20 @@ int main() {
             case 2: {
                 m = choose_create(2);
                 break;
+            }
+            case 3: {
+                test_transpose_double();
+                test_transpose_complex();
+                test_mul_scalar_matrix_double();
+                test_mul_scalar_matrix_complex();
+                test_add_matrix_double();
+                test_add_matrix_complex();
+                test_sub_matrix_double();
+                test_sub_matrix_complex();
+                test_mul_matrix_double();
+                test_mul_matrix_complex();
+                printf("All tests passed!");
+                exit(0);
             }
             default: {
                 printf("Enter a number from the list!\n");

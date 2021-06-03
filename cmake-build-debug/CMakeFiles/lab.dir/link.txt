@@ -1,1 +1,1 @@
-/usr/bin/cc -g  -Wl,--enable-auto-import CMakeFiles/lab.dir/Matrix.c.o CMakeFiles/lab.dir/main.c.o  -o lab.exe -Wl,--out-implib,liblab.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
+/usr/bin/cc -g -Wl,--enable-auto-import CMakeFiles/lab.dir/Matrix.c.o CMakeFiles/lab.dir/main.c.o CMakeFiles/lab.dir/tests.c.o -o lab.exe -Wl,--out-implib,liblab.dll.a -Wl,--major-image-version,0,--minor-image-version,0 

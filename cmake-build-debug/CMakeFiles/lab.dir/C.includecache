@@ -16,13 +16,13 @@ complex.h
 math.h
 -
 
-/cygdrive/d/CLionProjects/lab/main.c
-Matrix.h
-/cygdrive/d/CLionProjects/lab/Matrix.h
+/cygdrive/d/CLionProjects/lab/tests.c
 stdio.h
+-
+stdbool.h
 -
 stdlib.h
 -
-complex.h
--
+Matrix.h
+/cygdrive/d/CLionProjects/lab/Matrix.h
 
